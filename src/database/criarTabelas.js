@@ -1,4 +1,7 @@
-const model = [require("../routes/user/model")];
+const model = [
+	require("../routes/user/model"),
+	require("../routes/types/model"),
+];
 
 const createTables = async () => {
 	model.map((item) => {
