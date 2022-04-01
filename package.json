@@ -1,0 +1,26 @@
+{
+  "name": "si-backend",
+  "version": "0.0.0",
+  "description": "Backend para Projeto de SI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "config": "^3.3.7",
+    "express": "^4.17.3",
+    "jsontoxml": "^1.0.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.17.0",
+    "uuidv4": "^6.2.13"
+  },
+  "devDependencies": {
+    "eslint": "^8.12.0",
+    "git-cz": "^4.8.0",
+    "husky": "^7.0.4"
+  }
+}
