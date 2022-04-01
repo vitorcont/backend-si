@@ -15,6 +15,10 @@ const cols = {
 		type: Sequelize.STRING,
 		allowNull: false,
 	},
+	profileType: {
+		type: Sequelize.NUMBER,
+		allowNull: false,
+	},
 	password: {
 		type: Sequelize.STRING,
 		allowNull: false,
