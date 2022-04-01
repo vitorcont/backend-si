@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const config = require("config");
-const router = require("./routes/user");
+const userRouter = require("./routes/user");
+const typesRouter = require("./routes/types");
 
 app.use(bodyParser.json());
 app.use((req, res, prox) => {
@@ -15,7 +16,9 @@ app.use((req, res, prox) => {
 	res.setHeader("Content-Type", requestedType);
 	prox();
 });
-app.use("/user", router);
+
+app.use("/user", userRouter);
+app.use("/types", typesRouter);
 
 app.use((err, req, res, prox) => {
 	res.status(400).send(err);

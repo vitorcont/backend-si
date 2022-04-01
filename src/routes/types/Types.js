@@ -2,23 +2,21 @@ const tabela = require("./table");
 const { uuid } = require("uuidv4");
 
 class User {
-	constructor({ id, name, email, password }) {
+	constructor({ id, typeName, subTypes }) {
 		this.id = id;
-		this.email = email;
-		this.name = name;
-		this.password = password;
+		this.typeName = typeName;
+		this.subTypes = subTypes;
 	}
 
 	async criar() {
 		const result = await tabela.inserir({
 			id: uuid(),
-			name: this.name,
-			email: this.email,
-			password: this.password,
+			typeName: this.typeName,
+			subTypes: this.subTypes.join(", "),
 		});
 
 		this.id = result.id;
-		this.createdAt = result.dataCriacao;
+		this.createdAt = result.createdAt;
 		this.updatedAt = result.updatedAt;
 	}
 
@@ -26,21 +24,26 @@ class User {
 		const result = await tabela.getById(this.id);
 
 		this.id = result.id;
-		this.name = result.name;
-		this.email = result.email;
+		this.typeName = result.typeName;
+		this.subTypes = result.subTypes.split(", ");
 		this.createdAt = result.dataCriacao;
 		this.updatedAt = result.updatedAt;
 	}
 
 	async update() {
 		const result = await tabela.getById(this.id);
-		const fields = ["name", "email", "password"];
+		const fields = ["typeName", "subTypes"];
 		const updatedData = {};
+		console.log(this);
 
 		fields.forEach((field) => {
 			const valor = this[field];
-			if (typeof valor === "string" && valor.length > 0) {
-				updatedData[field] = valor;
+			if (valor.length > 0) {
+				if (field === "subTypes") {
+					updatedData[field] = valor.join(", ");
+				} else {
+					updatedData[field] = valor;
+				}
 			}
 		});
 
