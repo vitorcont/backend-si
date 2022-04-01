@@ -5,8 +5,10 @@ const User = require("./User");
 router.get("/", async (req, res, prox) => {
 	const response = await tabela.listar();
 	const filteredResponse = response.map((item) => ({
+		id: item.id,
 		name: item.name,
 		email: item.email,
+		profileType: item.profileType,
 		createdAt: item.createdAt,
 		updatedAt: item.updatedAt,
 	}));

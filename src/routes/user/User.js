@@ -2,11 +2,12 @@ const tabela = require("./table");
 const { uuid } = require("uuidv4");
 
 class User {
-	constructor({ id, name, email, password }) {
+	constructor({ id, name, email, password, profileType }) {
 		this.id = id;
 		this.email = email;
 		this.name = name;
 		this.password = password;
+		this.profileType = profileType;
 	}
 
 	async criar() {
@@ -15,6 +16,7 @@ class User {
 			name: this.name,
 			email: this.email,
 			password: this.password,
+			profileType: this.profileType,
 		});
 
 		this.id = result.id;
@@ -28,18 +30,22 @@ class User {
 		this.id = result.id;
 		this.name = result.name;
 		this.email = result.email;
-		this.createdAt = result.dataCriacao;
+		this.profileType = result.profileType;
+		this.createdAt = result.createdAt;
 		this.updatedAt = result.updatedAt;
 	}
 
 	async update() {
 		const result = await tabela.getById(this.id);
-		const fields = ["name", "email", "password"];
+		const fields = ["name", "email", "password", "profileType"];
 		const updatedData = {};
 
 		fields.forEach((field) => {
 			const valor = this[field];
-			if (typeof valor === "string" && valor.length > 0) {
+			if (
+				(typeof valor === "string" && valor.length > 0) ||
+				typeof valor === "number"
+			) {
 				updatedData[field] = valor;
 			}
 		});
