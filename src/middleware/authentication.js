@@ -2,10 +2,8 @@ const { verify } = require("jsonwebtoken");
 
 const authenticateUser = (req, res, prox) => {
 	const authToken = req.headers.authorization;
-	console.log("HERE", req.headers.authorization);
 
 	if (!authToken) {
-		console.log("a");
 		return res.status(401).send();
 	}
 	const token = authToken.split(" ")[1];

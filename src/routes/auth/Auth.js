@@ -15,14 +15,14 @@ class Auth {
 		const result = await tabela.find(this.email, this.password);
 		const UserData = new User(result);
 		const passwordMatches = await compare(this.password, result.password);
-		console.log(passwordMatches);
 		if (!passwordMatches) {
 			throw new Error("ERRO");
 		}
 		const token = sign({}, "c0f520dd-1744-482f-832d-0495d6599589", {
 			subject: UserData.id,
-			expiresIn: "20s",
+			expiresIn: "1d",
 		});
+		UserData.updateToken(token);
 		this.token = token;
 	}
 }

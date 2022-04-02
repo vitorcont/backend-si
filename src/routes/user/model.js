@@ -4,7 +4,6 @@ const instance = require("../../database/index");
 const cols = {
 	id: {
 		type: Sequelize.STRING,
-		allowNull: false,
 		primaryKey: true,
 	},
 	name: {
@@ -16,21 +15,25 @@ const cols = {
 		allowNull: false,
 	},
 	profileType: {
-		type: Sequelize.NUMBER,
+		type: Sequelize.INTEGER,
 		allowNull: false,
 	},
 	password: {
 		type: Sequelize.STRING,
 		allowNull: false,
 	},
+	token: {
+		type: Sequelize.STRING,
+		allowNull: true,
+	},
 };
 
 const options = {
 	freezeTableName: true,
-	tableName: "user",
+	tableName: "users",
 	timestamp: true,
 	createdAt: "createdAt",
 	updatedAt: "updatedAt",
 };
 
-module.exports = instance.define("user", cols, options);
+module.exports = instance.define("users", cols, options);

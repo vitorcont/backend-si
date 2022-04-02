@@ -7,7 +7,7 @@ router.post("/", async (req, res, prox) => {
 		const data = req.body;
 		const authData = new Auth(data);
 		await authData.login();
-		res.status(200).send(authData);
+		res.status(200).send({ token: authData.token });
 	} catch (err) {
 		prox(err);
 	}

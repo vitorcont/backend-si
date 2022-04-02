@@ -1,8 +1,7 @@
 const model = require("../user/model");
 
 module.exports = {
-	async find(email, password) {
-		console.log(email);
+	async find(email) {
 		const result = await model.findOne({
 			where: {
 				email,
