@@ -1,8 +1,11 @@
 const router = require("express").Router();
 const tabela = require("./table");
 const User = require("./User");
+const { authenticateUser } = require("../../middleware/authentication");
+const profileEnum = require("../../enum/profileTypes");
+const { validateProfile } = require("../../services/profileTypes");
 
-router.get("/", async (req, res, prox) => {
+router.get("/", authenticateUser, async (req, res, prox) => {
 	const response = await tabela.listar();
 	const filteredResponse = response.map((item) => ({
 		id: item.id,
@@ -17,16 +20,30 @@ router.get("/", async (req, res, prox) => {
 
 router.post("/", async (req, res, prox) => {
 	try {
-		const data = req.body;
+		const authToken = req.headers.authorization;
+		let data = req.body;
+		if (authToken) {
+			const token = authToken.split(" ")[1];
+			data = {
+				...data,
+				token,
+			};
+		}
 		const userData = new User(data);
 		await userData.criar();
-		res.status(200).send(userData);
+		res.status(200).send({
+			name: userData.name,
+			email: userData.email,
+			profileType: userData.profileType,
+			createdAt: userData.createdAt,
+			updatedAt: userData.updatedAt,
+		});
 	} catch (err) {
 		prox(err);
 	}
 });
 
-router.get("/:id", async (req, res, prox) => {
+router.get("/:id", authenticateUser, async (req, res, prox) => {
 	const id = req.params.id;
 
 	try {
@@ -38,7 +55,7 @@ router.get("/:id", async (req, res, prox) => {
 	}
 });
 
-router.put("/:id", async (req, res, prox) => {
+router.put("/:id", authenticateUser, async (req, res, prox) => {
 	const id = req.params.id;
 	const data = req.body;
 
@@ -51,7 +68,7 @@ router.put("/:id", async (req, res, prox) => {
 	}
 });
 
-router.delete("/:id", async (req, res, prox) => {
+router.delete("/:id", authenticateUser, async (req, res, prox) => {
 	const id = req.params.id;
 	const data = req.body;
 

@@ -33,4 +33,18 @@ module.exports = {
 			},
 		});
 	},
+	async findByEmail(email) {
+		return await model.findOne({
+			where: {
+				email,
+			},
+		});
+	},
+	async findByToken(token) {
+		return await model.findOne({
+			where: {
+				token,
+			},
+		});
+	},
 };
