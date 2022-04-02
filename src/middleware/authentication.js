@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { verify } = require("jsonwebtoken");
 
 const authenticateUser = (req, res, prox) => {
@@ -9,7 +10,7 @@ const authenticateUser = (req, res, prox) => {
 	const token = authToken.split(" ")[1];
 
 	try {
-		verify(token, "c0f520dd-1744-482f-832d-0495d6599589");
+		verify(token, process.env.JWT_TOKEN);
 
 		return prox();
 	} catch (err) {

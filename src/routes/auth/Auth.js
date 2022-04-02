@@ -1,3 +1,4 @@
+require("dotenv").config();
 const tabela = require("./table");
 const { compare } = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
@@ -18,7 +19,7 @@ class Auth {
 		if (!passwordMatches) {
 			throw new Error("ERRO");
 		}
-		const token = sign({}, "c0f520dd-1744-482f-832d-0495d6599589", {
+		const token = sign({}, process.env.JWT_TOKEN, {
 			subject: UserData.id,
 			expiresIn: "1d",
 		});

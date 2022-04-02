@@ -31,7 +31,13 @@ router.post("/", async (req, res, prox) => {
 		}
 		const userData = new User(data);
 		await userData.criar();
-		res.status(200).send(userData);
+		res.status(200).send({
+			name: userData.name,
+			email: userData.email,
+			profileType: userData.profileType,
+			createdAt: userData.createdAt,
+			updatedAt: userData.updatedAt,
+		});
 	} catch (err) {
 		prox(err);
 	}
