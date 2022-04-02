@@ -1,5 +1,6 @@
 const tabela = require("./table");
 const { uuid } = require("uuidv4");
+const { hash } = require("bcryptjs");
 
 class User {
 	constructor({ id, name, email, password, profileType }) {
@@ -11,11 +12,12 @@ class User {
 	}
 
 	async criar() {
+		const hashedPassword = await hash(this.password, 8);
 		const result = await tabela.inserir({
 			id: uuid(),
 			name: this.name,
 			email: this.email,
-			password: this.password,
+			password: hashedPassword,
 			profileType: this.profileType,
 		});
 

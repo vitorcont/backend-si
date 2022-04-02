@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const config = require("config");
 const userRouter = require("./routes/user");
 const typesRouter = require("./routes/types");
+const authRouter = require("./routes/auth");
 
 app.use(bodyParser.json());
 app.use((req, res, prox) => {
@@ -19,6 +20,7 @@ app.use((req, res, prox) => {
 
 app.use("/user", userRouter);
 app.use("/types", typesRouter);
+app.use("/auth", authRouter);
 
 app.use((err, req, res, prox) => {
 	res.status(400).send(err);

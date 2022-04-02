@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const tabela = require("./table");
 const User = require("./User");
+const { authenticateUser } = require("../../middleware/authentication");
 
-router.get("/", async (req, res, prox) => {
+router.get("/", authenticateUser, async (req, res, prox) => {
 	const response = await tabela.listar();
 	const filteredResponse = response.map((item) => ({
 		id: item.id,
