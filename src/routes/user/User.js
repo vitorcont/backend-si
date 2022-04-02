@@ -78,9 +78,8 @@ class User {
 		});
 	}
 
-	async byToken(token) {
-		const result = await tabela.findByToken(token);
-
+	async byToken() {
+		const result = await tabela.findByToken(this.token);
 		this.id = result.id;
 		this.name = result.name;
 		this.email = result.email;

@@ -34,7 +34,6 @@ class User {
 		const result = await tabela.getById(this.id);
 		const fields = ["typeName", "subTypes"];
 		const updatedData = {};
-		console.log(this);
 
 		fields.forEach((field) => {
 			const valor = this[field];
