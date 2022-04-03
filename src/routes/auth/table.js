@@ -14,4 +14,14 @@ module.exports = {
 			return result;
 		}
 	},
+	async findToken(token) {
+		const result = await model.findOne({
+			where: {
+				token,
+			},
+			raw: true,
+		});
+
+		return result;
+	},
 };

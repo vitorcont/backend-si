@@ -30,6 +30,10 @@ router.post("/", async (req, res, prox) => {
 			};
 		}
 		const userData = new User(data);
+		if (userData.profileType > profileEnum.APP_USER) {
+			authenticateUser(req, res, () => {});
+			await validateProfile(profileEnum.DASH_ADMIN, data.token);
+		}
 		await userData.criar();
 		res.status(200).send({
 			name: userData.name,
