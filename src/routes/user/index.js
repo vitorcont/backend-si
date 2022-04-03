@@ -1,11 +1,15 @@
 const router = require("express").Router();
 const tabela = require("./table");
 const User = require("./User");
-const { authenticateUser } = require("../../middleware/authentication");
+const {
+	authenticateUser,
+	authenticateUserAdmin,
+	authenticateUserDashboard,
+} = require("../../middleware/authentication");
 const profileEnum = require("../../enum/profileTypes");
 const { validateProfile } = require("../../services/profileTypes");
 
-router.get("/", authenticateUser, async (req, res, prox) => {
+router.get("/", authenticateUserDashboard, async (req, res, prox) => {
 	const response = await tabela.listar();
 	const filteredResponse = response.map((item) => ({
 		id: item.id,
@@ -31,8 +35,7 @@ router.post("/", async (req, res, prox) => {
 		}
 		const userData = new User(data);
 		if (userData.profileType > profileEnum.APP_USER) {
-			authenticateUser(req, res, () => {});
-			await validateProfile(profileEnum.DASH_ADMIN, data.token);
+			authenticateUserAdmin(req, res, () => {});
 		}
 		await userData.criar();
 		res.status(200).send({
