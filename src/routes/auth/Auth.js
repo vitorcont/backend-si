@@ -26,6 +26,16 @@ class Auth {
 		UserData.updateToken(token);
 		this.token = token;
 	}
+
+	async getProfileType(token) {
+		const result = await tabela.findToken(token);
+		if (result) {
+			this.profileType = result.profileType;
+			this.token = token;
+		} else {
+			throw new Error("ERROR");
+		}
+	}
 }
 
 module.exports = Auth;
