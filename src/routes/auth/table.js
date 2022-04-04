@@ -24,4 +24,11 @@ module.exports = {
 
 		return result;
 	},
+	update(id, data) {
+		return model.update(data, {
+			where: {
+				id,
+			},
+		});
+	},
 };

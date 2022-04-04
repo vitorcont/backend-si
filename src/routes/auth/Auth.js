@@ -3,6 +3,8 @@ const tabela = require("./table");
 const { compare } = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
 const User = require("../user/User");
+const { sendRecoveryMail } = require("../../services/mail");
+const { hash } = require("bcryptjs");
 
 class Auth {
 	constructor({ email, password, profileType, token }) {
@@ -13,7 +15,7 @@ class Auth {
 	}
 
 	async login() {
-		const result = await tabela.find(this.email, this.password);
+		const result = await tabela.find(this.email);
 		const UserData = new User(result);
 		const passwordMatches = await compare(this.password, result.password);
 		if (!passwordMatches) {
@@ -32,6 +34,23 @@ class Auth {
 		if (result) {
 			this.profileType = result.profileType;
 			this.token = token;
+		} else {
+			throw new Error("ERROR");
+		}
+	}
+
+	async passwordRecovery() {
+		const result = await tabela.find(this.email);
+		if (result) {
+			var arr = [];
+			while (arr.length < 5) {
+				var r = Math.floor(Math.random() * 100) + 1;
+				if (arr.indexOf(r) === -1) arr.push(r);
+			}
+			const newPassword = arr.join("");
+			const hashedPassword = await hash(newPassword, 8);
+			tabela.update(result.id, { password: hashedPassword });
+			await sendRecoveryMail(newPassword, result.email);
 		} else {
 			throw new Error("ERROR");
 		}
