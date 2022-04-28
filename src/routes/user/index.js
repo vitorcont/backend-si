@@ -69,7 +69,7 @@ router.put("/:id", authenticateUser, async (req, res, prox) => {
 	try {
 		const userData = new User({ ...data, id: id });
 		await userData.update();
-		res.status(200).send(userData);
+		res.status(200).send({ ...userData, password: undefined });
 	} catch (err) {
 		prox(err);
 	}

@@ -47,8 +47,15 @@ class User {
 		const fields = ["name", "email", "password", "profileType"];
 		const updatedData = {};
 
-		fields.forEach((field) => {
+		fields.forEach(async (field) => {
 			const valor = this[field];
+			if (field === "password") {
+				const hashedPassword = await hash(valor, 8);
+
+				setTimeout(() => {
+					updatedData[field] = hashedPassword;
+				}, 700);
+			}
 			if (
 				(typeof valor === "string" && valor.length > 0) ||
 				typeof valor === "number"
@@ -57,14 +64,16 @@ class User {
 			}
 		});
 
-		if (Object.keys(updatedData).length < 1) {
-			throw new Error();
-		}
+		setTimeout(() => {
+			if (Object.keys(updatedData).length < 1) {
+				throw new Error("Erro nos campos");
+			}
 
-		tabela.update(this.id, {
-			...updatedData,
-			updatedAt: new Date().toISOString(),
-		});
+			tabela.update(this.id, {
+				...updatedData,
+				updatedAt: new Date().toISOString(),
+			});
+		}, 1500);
 	}
 
 	async remove() {
