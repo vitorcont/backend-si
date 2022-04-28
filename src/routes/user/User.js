@@ -82,7 +82,7 @@ class User {
 
 	async updateToken(token) {
 		this.token = token;
-		tabela.update(this.id, {
+		await tabela.update(this.id, {
 			token,
 		});
 	}

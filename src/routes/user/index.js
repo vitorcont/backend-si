@@ -19,7 +19,7 @@ router.get("/", authenticateUserDashboard, async (req, res, prox) => {
 		createdAt: item.createdAt,
 		updatedAt: item.updatedAt,
 	}));
-	res.status(200).send(filteredResponse);
+	res.status(200).json(filteredResponse);
 });
 
 router.post("/", async (req, res, prox) => {
@@ -38,7 +38,7 @@ router.post("/", async (req, res, prox) => {
 			authenticateUserAdmin(req, res, () => {});
 		}
 		await userData.criar();
-		res.status(200).send({
+		res.status(200).json({
 			name: userData.name,
 			email: userData.email,
 			profileType: userData.profileType,
@@ -56,7 +56,7 @@ router.get("/:id", authenticateUser, async (req, res, prox) => {
 	try {
 		const userData = new User({ id });
 		await userData.byId(id);
-		res.status(200).send(userData);
+		res.status(200).json(userData);
 	} catch (err) {
 		prox(err);
 	}
@@ -69,7 +69,7 @@ router.put("/:id", authenticateUser, async (req, res, prox) => {
 	try {
 		const userData = new User({ ...data, id: id });
 		await userData.update();
-		res.status(200).send({ ...userData, password: undefined });
+		res.status(200).json({ ...userData, password: undefined });
 	} catch (err) {
 		prox(err);
 	}
@@ -83,7 +83,7 @@ router.delete("/:id", authenticateUser, async (req, res, prox) => {
 		const userData = new User({ id: id });
 		await userData.byId();
 		await userData.remove();
-		res.status(200).send(userData);
+		res.status(200).json(userData);
 	} catch (err) {
 		prox(err);
 	}

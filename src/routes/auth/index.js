@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const tabela = require("./table");
 const Auth = require("./Auth");
 
 router.post("/", async (req, res, prox) => {
@@ -7,7 +6,8 @@ router.post("/", async (req, res, prox) => {
 		const data = req.body;
 		const authData = new Auth(data);
 		await authData.login();
-		res.status(200).send({ token: authData.token });
+		console.log("aaa");
+		res.status(200).json({ token: authData.token });
 	} catch (err) {
 		prox(err);
 	}
@@ -18,7 +18,7 @@ router.post("/recovery", async (req, res, prox) => {
 		const data = req.body;
 		const authData = new Auth(data);
 		await authData.passwordRecovery();
-		res.status(200).send();
+		res.status(200).json();
 	} catch (err) {
 		prox(err);
 	}

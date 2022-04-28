@@ -18,6 +18,7 @@ class Auth {
 		const result = await tabela.find(this.email);
 		const UserData = new User(result);
 		const passwordMatches = await compare(this.password, result.password);
+
 		if (!passwordMatches) {
 			throw new Error("ERRO");
 		}
@@ -25,7 +26,9 @@ class Auth {
 			subject: UserData.id,
 			expiresIn: "1d",
 		});
-		UserData.updateToken(token);
+
+		await UserData.updateToken(token);
+
 		this.token = token;
 	}
 

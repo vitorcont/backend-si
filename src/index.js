@@ -14,7 +14,7 @@ app.use((req, res, prox) => {
 		requestedType = "application/json";
 	}
 
-	res.setHeader("Content-Type", requestedType);
+	res.setHeader("Content-Type", "application/json");
 	prox();
 });
 

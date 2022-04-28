@@ -19,8 +19,8 @@ module.exports = {
 			return result;
 		}
 	},
-	update(id, data) {
-		return model.update(data, {
+	async update(id, data) {
+		return await model.update(data, {
 			where: {
 				id,
 			},
