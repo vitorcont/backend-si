@@ -7,6 +7,11 @@ const cols = {
 		allowNull: false,
 		primaryKey: true,
 	},
+	userId: {
+		type: Sequelize.STRING,
+		allowNull: false,
+		primaryKey: true,
+	},
 	title: {
 		type: Sequelize.STRING,
 		allowNull: false,
@@ -24,6 +29,10 @@ const cols = {
 		allowNull: false,
 	},
 	image: {
+		type: Sequelize.BLOB("medium"),
+		allowNull: false,
+	},
+	audio: {
 		type: Sequelize.BLOB("medium"),
 		allowNull: false,
 	},

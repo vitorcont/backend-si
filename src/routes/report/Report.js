@@ -5,37 +5,46 @@ const { uuid } = require("uuidv4");
 class Report {
 	constructor({
 		id,
+		userId,
 		title,
 		description,
 		typeId,
 		type,
 		subTypes,
 		image,
+		audio,
 		latitude,
 		longitude,
 	}) {
 		this.id = id;
 		this.title = title;
+		this.userId = userId;
 		this.description = description;
 		this.typeId = typeId;
 		this.type = null;
 		this.subTypes = subTypes;
 		this.image = image;
+		this.audio = audio;
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 
 	async criar() {
-		let treatedImage;
+		let treatedImage, treatedAudio;
 		if (this.image) {
 			treatedImage = await Blob(this.image);
+		}
+		if (this.audio) {
+			treatedAudio = await Blob(this.audio);
 		}
 		const result = await reportTable.inserir({
 			id: uuid(),
 			title: this.title,
+			userId: this.userId,
 			description: this.description,
 			typeId: this.typeId,
 			image: treatedImage,
+			audio: treatedAudio,
 			subTypes: this.subTypes.join(", "),
 			latitude: this.latitude,
 			longitude: this.longitude,
@@ -64,6 +73,7 @@ class Report {
 		this.latitude = result.latitude;
 		this.longitude = result.longitude;
 		this.type = type;
+		this.userId = result.userId;
 		this.description = result.description;
 		this.subTypes = result.subTypes.split(", ");
 		this.createdAt = result.dataCriacao;
