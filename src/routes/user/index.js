@@ -26,6 +26,9 @@ router.post("/", async (req, res, prox) => {
 	try {
 		const authToken = req.headers.authorization;
 		let data = req.body;
+		if (data.profileType > profileEnum.APP_USER) {
+			authenticateUserAdmin(req, res, () => {});
+		}
 		if (authToken) {
 			const token = authToken.split(" ")[1];
 			data = {
@@ -34,9 +37,6 @@ router.post("/", async (req, res, prox) => {
 			};
 		}
 		const userData = new User(data);
-		if (userData.profileType > profileEnum.APP_USER) {
-			authenticateUserAdmin(req, res, () => {});
-		}
 		await userData.criar();
 		res.status(200).json({
 			name: userData.name,
