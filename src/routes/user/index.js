@@ -22,6 +22,25 @@ router.get("/", authenticateUserDashboard, async (req, res, prox) => {
 	res.status(200).json(filteredResponse);
 });
 
+router.get("/me", authenticateUser, async (req, res, prox) => {
+	const authToken = req.headers.authorization;
+	const token = authToken.split(" ")[1];
+	const response = await tabela.findByToken(token);
+
+	if (token) {
+		res.status(200).json({
+			id: response.id,
+			name: response.name,
+			email: response.email,
+			profileType: response.profileType,
+			createdAt: response.createdAt,
+			updatedAt: response.updatedAt,
+		});
+	} else {
+		res.status(400).json({ message: "user_not_found" });
+	}
+});
+
 router.post("/", async (req, res, prox) => {
 	try {
 		const authToken = req.headers.authorization;
