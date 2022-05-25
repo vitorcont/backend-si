@@ -15,6 +15,9 @@ class Auth {
 	}
 
 	async login() {
+		if (this.email === "" || this.password === "") {
+			throw new Error("ERRO");
+		}
 		const result = await tabela.find(this.email);
 		const UserData = new User(result);
 		const passwordMatches = await compare(this.password, result.password);
