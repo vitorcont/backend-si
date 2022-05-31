@@ -1,7 +1,20 @@
-const Blob = (base64) => {
-  const base64Response = await fetch(base64);
+const fetch = (...args) =>
+	import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-  return base64Response.blob();
+const b64toBlob = async (b64Data) => {
+	console.log("AAAA");
+	const data = await fetch(b64Data);
+	console.log("BBB", data);
+	return data.blob();
 };
 
-module.exports = { Blob };
+const blobToBase64 = (blob, callback) => {
+	const reader = new FileReader();
+	reader.onload = () => {
+		const base64 = reader.result;
+		callback(base64);
+	};
+	reader.readAsDataURL(blob);
+};
+
+module.exports = { b64toBlob, blobToBase64 };

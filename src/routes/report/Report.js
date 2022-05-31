@@ -1,6 +1,7 @@
 const reportTable = require("./table");
 const typeTable = require("../types/table");
 const { uuid } = require("uuidv4");
+const { b64toBlob, blobToBase64 } = require("../../services/tools");
 
 class Report {
 	constructor({
@@ -30,12 +31,13 @@ class Report {
 	}
 
 	async criar() {
-		let treatedImage, treatedAudio;
+		let treatedImage = null,
+			treatedAudio = null;
 		if (this.image) {
-			treatedImage = await Blob(this.image);
+			treatedImage = await b64toBlob(this.image);
 		}
 		if (this.audio) {
-			treatedAudio = await Blob(this.audio);
+			treatedAudio = await b64toBlob(this.audio);
 		}
 		const result = await reportTable.inserir({
 			id: uuid(),
@@ -59,6 +61,14 @@ class Report {
 
 	async byId() {
 		const result = await reportTable.getById(this.id);
+		let treatedImage = null,
+			treatedAudio = null;
+		if (result.image) {
+			blobToBase64(result.image, (base64) => (treatedImage = base64));
+		}
+		if (result.audio) {
+			blobToBase64(result.audio, (base64) => (treatedAudio = base64));
+		}
 
 		this.id = result.id;
 		this.typeId = result.typeId;
@@ -78,6 +88,8 @@ class Report {
 		this.subTypes = result.subTypes.split(", ");
 		this.createdAt = result.dataCriacao;
 		this.updatedAt = result.updatedAt;
+		this.image = treatedImage;
+		this.audio = treatedAudio;
 	}
 
 	async update() {

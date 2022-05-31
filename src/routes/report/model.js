@@ -30,11 +30,11 @@ const cols = {
 	},
 	image: {
 		type: Sequelize.BLOB("medium"),
-		allowNull: false,
+		allowNull: true,
 	},
 	audio: {
 		type: Sequelize.BLOB("medium"),
-		allowNull: false,
+		allowNull: true,
 	},
 	latitude: {
 		type: Sequelize.STRING,
