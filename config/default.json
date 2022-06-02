@@ -1,11 +1,11 @@
 {
-    "mysql": {
-        "database": "si_backend",
-        "user": "root",
-        "password": "1812",
-        "host": "127.0.0.1"
-    },
-    "api": {
-        "porta": 4547
-    }
+	"mysql": {
+		"database": "si_backend",
+		"user": "root",
+		"password": "1812Vitor",
+		"host": "127.0.0.1"
+	},
+	"api": {
+		"porta": 4547
+	}
 }

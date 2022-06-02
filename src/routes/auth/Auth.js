@@ -19,8 +19,10 @@ class Auth {
 			throw new Error("ERRO");
 		}
 		const result = await tabela.find(this.email);
+		console.log("result", result);
 		const UserData = new User(result);
 		const passwordMatches = await compare(this.password, result.password);
+		console.log("pass", passwordMatches);
 
 		if (!passwordMatches) {
 			throw new Error("ERRO");

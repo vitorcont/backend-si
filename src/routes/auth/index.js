@@ -4,6 +4,7 @@ const Auth = require("./Auth");
 router.post("/", async (req, res, prox) => {
 	try {
 		const data = req.body;
+		console.log("aaa", req.body);
 		const authData = new Auth(data);
 		await authData.login();
 		console.log("aaa");

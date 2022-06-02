@@ -43,37 +43,41 @@ class User {
 	}
 
 	async update() {
-		const result = await tabela.getById(this.id);
 		const fields = ["name", "email", "password", "profileType"];
 		const updatedData = {};
 
-		fields.forEach(async (field) => {
-			const valor = this[field];
-			if (field === "password") {
-				const hashedPassword = await hash(valor, 8);
+		console.log(this)
 
-				setTimeout(() => {
-					updatedData[field] = hashedPassword;
-				}, 700);
-			}
-			if (
-				(typeof valor === "string" && valor.length > 0) ||
-				typeof valor === "number"
-			) {
-				updatedData[field] = valor;
-			}
+		Promise.all(
+			fields.map(async (field) => {
+				const valor = this[field];
+				if (field === "password") {
+					const hashedPassword = await hash(valor, 8);
+					
+					updatedData[field] = await hashedPassword;
+					await tabela.update(this.id, {
+						...updatedData,
+						updatedAt: new Date().toISOString(),
+					});
+				}
+				if (
+					(typeof valor === "string" && valor.length > 0) ||
+					typeof valor === "number"
+				) {
+					updatedData[field] = valor;
+					await hash('1', 8);
+				}
+			})
+		);
+
+		if (Object.keys(updatedData).length < 1) {
+			throw new Error("Erro nos campos");
+		}
+
+		await tabela.update(this.id, {
+			...updatedData,
+			updatedAt: new Date().toISOString(),
 		});
-
-		setTimeout(() => {
-			if (Object.keys(updatedData).length < 1) {
-				throw new Error("Erro nos campos");
-			}
-
-			tabela.update(this.id, {
-				...updatedData,
-				updatedAt: new Date().toISOString(),
-			});
-		}, 1500);
 	}
 
 	async remove() {

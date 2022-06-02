@@ -8,32 +8,8 @@ const Report = require("./Report");
 router.get("/", async (req, res, prox) => {
 	const response = await reportTable.listar({ raw: true });
 	const types = await typeTable.listar({ raw: true });
-	let token = null,
-		user = null;
 
-	const authToken = req.headers.authorization;
-	console.log(authToken);
-	if (authToken) {
-		token = authToken.split(" ")[1];
-		user = await userTable.findByToken(token);
-	}
-
-	if (!user && token) {
-		res.status(400).json({ msg: "Usuário não encontrado" });
-		return;
-	}
-	let filteredResponse = response;
-	if (user && user.profileType === APP_USER) {
-		console.log("AQUI");
-
-		filteredResponse = response.filter((item) => item.userId === user.id);
-	}
-
-	filteredResponse = filteredResponse.filter((item) => {
-		return !!types.find((value) => value.id === item.typeId);
-	});
-
-	const treatedResponse = filteredResponse.map((item) => {
+	const treatedResponse = response.map((item) => {
 		let type = types.find((value) => value.id === item.typeId);
 		type = {
 			id: type.id,
