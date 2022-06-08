@@ -24,11 +24,7 @@ app.use((req, res, prox) => {
 		"GET, POST, OPTIONS, PUT, PATCH, DELETE",
 	);
 	res.setHeader("Access-Control-Allow-Credentials", true);
-	res.setHeader("Access-Control-Allow-Headers", [
-		"Origin",
-		"Content-Type",
-		"X-Auth-Token",
-	]);
+	res.setHeader("Access-Control-Allow-Headers", "*");
 
 	prox();
 });

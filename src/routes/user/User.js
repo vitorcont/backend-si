@@ -46,14 +46,14 @@ class User {
 		const fields = ["name", "email", "password", "profileType"];
 		const updatedData = {};
 
-		console.log(this)
+		console.log(this);
 
 		Promise.all(
 			fields.map(async (field) => {
 				const valor = this[field];
-				if (field === "password") {
+				if (field === "password" && valor) {
 					const hashedPassword = await hash(valor, 8);
-					
+
 					updatedData[field] = await hashedPassword;
 					await tabela.update(this.id, {
 						...updatedData,
@@ -65,9 +65,9 @@ class User {
 					typeof valor === "number"
 				) {
 					updatedData[field] = valor;
-					await hash('1', 8);
+					await hash("1", 8);
 				}
-			})
+			}),
 		);
 
 		if (Object.keys(updatedData).length < 1) {
